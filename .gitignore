@@ -1,7 +1,10 @@
 # Created by https://www.toptal.com/developers/gitignore/api/c++
 # Edit at https://www.toptal.com/developers/gitignore?templates=c++
 
-.vscode/
+CMakeFiles/
+Makefile
+CMakeCache.txt
+cmake_install.cmake
 
 ### C++ ###
 # Prerequisites
