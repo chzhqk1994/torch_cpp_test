@@ -3,25 +3,26 @@
     "runner": "terminal",
     "type": "shell",
     "echoCommand": true,
-    "presentation" : { "reveal": "always" },
+    "presentation": {
+        "reveal": "always"
+    },
     "tasks": [
-          //C++ 컴파일
-          {
-            "label": "compile for C++",
-            "command": "cd ${fileDirname} && cmake . && make",
+        {
+            "label": "save and compile for C++",
+            "command": "g++",
+            "args": [
+                "${file}",
+                "-g",
+                "-o",
+                "${fileDirname}/${fileBasenameNoExtension}"
+            ],
             "group": "build",
-
-            //컴파일시 에러를 편집기에 반영
-            //참고:   https://code.visualstudio.com/docs/editor/tasks#_defining-a-problem-matcher
-
             "problemMatcher": {
                 "fileLocation": [
                     "relative",
                     "${workspaceRoot}"
                 ],
                 "pattern": {
-                    // The regular expression. 
-                   //Example to match: helloWorld.c:5:3: warning: implicit declaration of function 'prinft'
                     "regexp": "^(.*):(\\d+):(\\d+):\\s+(warning error):\\s+(.*)$",
                     "file": 1,
                     "line": 2,
@@ -31,17 +32,60 @@
                 }
             }
         },
-        // 바이너리 실행(Ubuntu)
-
         {
+            "label": "save and compile for C",
+            "command": "gcc",
+            "args": [
+                "${file}",
+                "-g",
+                "-o",
+                "${fileDirname}/${fileBasenameNoExtension}"
+            ],
+            "group": "build",
+            "problemMatcher": {
+                "fileLocation": [
+                    "relative",
+                    "${workspaceRoot}"
+                ],
+                "pattern": {
+                    "regexp": "^(.*):(\\d+):(\\d+):\\s+(warning error):\\s+(.*)$",
+                    "file": 1,
+                    "line": 2,
+                    "column": 3,
+                    "severity": 4,
+                    "message": 5
+                }
+            }
+        },
+        {
+            "type": "shell",
+            "label": "cmake and make build",
+            "command": "cd ${fileDirname} && mkdir -p build && cd build && cmake .. && make",
 
+            "problemMatcher": {
+                "fileLocation": [
+                    "relative",
+                    "${workspaceRoot}"
+                ],
+                "pattern": {
+                    "regexp": "^(.*):(\\d+):(\\d+):\\s+(warning|error):\\s+(.*)$",
+                    "file": 1,
+                    "line": 2,
+                    "column": 3,
+                    "severity": 4,
+                    "message": 5
+                }
+            },
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        },
+        {
             "label": "execute",
-
-            "command": "cd ${fileDirname} && ./${workspaceFolderBasename} ",
-
-            "group": "test"
-
+            "command": "cd ${fileDirname} &&./${fileBasenameNoExtension}",
+            "group": "build",
+            "problemMatcher": []
         }
-
     ]
 }
